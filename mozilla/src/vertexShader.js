@@ -1,6 +1,5 @@
-  // Vertex shader program
 
-  const vsSource = `
+const vsSource = `
     attribute vec4 aVertexPosition;
 
     uniform mat4 uModelViewMatrix;
@@ -9,4 +8,4 @@
     void main() {
       gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
     }
-  `;
+`;
