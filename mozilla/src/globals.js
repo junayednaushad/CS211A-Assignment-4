@@ -1,1 +1,1 @@
-var squareRotation = 0.0;
+var cubeRotation = 0.0;
