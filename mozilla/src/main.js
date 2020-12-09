@@ -1,5 +1,3 @@
-var squareRotation = 0.0;
-
 main();
 
 //
