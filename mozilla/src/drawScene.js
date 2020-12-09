@@ -38,15 +38,15 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
 
     mat4.translate(modelViewMatrix,     // destination matrix
                     modelViewMatrix,     // matrix to translate
-                    [-0.0, 0.0, -6.0]);  // amount to translate
+                    [-0.0, 0.0, -20.0]);  // amount to translate
     mat4.rotate(modelViewMatrix,  // destination matrix
                 modelViewMatrix,  // matrix to rotate
                 cubeRotation,   // amount to rotate in radians
-                [0, 0, 1]);       // axis to rotate around
-    mat4.rotate(modelViewMatrix,  // destination matrix
-        modelViewMatrix,  // matrix to rotate
-        cubeRotation * .7,// amount to rotate in radians
-        [0, 1, 0]);       // axis to rotate around (X)
+                [0, 1, 0]);       // axis to rotate around
+    // mat4.rotate(modelViewMatrix,  // destination matrix
+    //     modelViewMatrix,  // matrix to rotate
+    //     cubeRotation * .7,// amount to rotate in radians
+    //     [0, 1, 0]);       // axis to rotate around (X)
        
     // Tell WebGL how to pull out the positions from the position
     // buffer into the vertexPosition attribute.
@@ -112,11 +112,34 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
-        
-    // Update the rotation for the next draw
+    
 
-    cubeRotation += deltaTime;
+    // Second cube
 
+    const modelViewMatrix2 = mat4.create();
+
+    mat4.translate(modelViewMatrix,     // destination matrix
+                    modelViewMatrix,     // matrix to translate
+                    [4, 0.0, 0.0]);  // amount to translate
+    mat4.scale(modelViewMatrix, modelViewMatrix, [0.5,0.5,0.5])
+    
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocations.projectionMatrix,
+        false,
+        projectionMatrix);
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocations.modelViewMatrix,
+        false,
+        modelViewMatrix);
+
+    {
+        const vertexCount = 36;
+        const type = gl.UNSIGNED_SHORT;
+        const offset = 0;
+        gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+    }
+
+    cubeRotation += 1.5*deltaTime;
 }
   
   
