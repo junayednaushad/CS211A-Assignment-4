@@ -39,15 +39,17 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
 
     mat4.translate(modelViewMatrix,     // destination matrix
                     modelViewMatrix,     // matrix to translate
-                    [-0.0, 0.0, -20.0]);  // amount to translate
+                    [translation, 0.0, -20.0]);  // amount to translate
     mat4.rotate(modelViewMatrix,  // destination matrix
                 modelViewMatrix,  // matrix to rotate
-                cubeRotation,   // amount to rotate in radians
+                cubeRotation,     // amount to rotate in radians
                 [0, 1, 0]);       // axis to rotate around
-    // mat4.rotate(modelViewMatrix,  // destination matrix
-    //     modelViewMatrix,  // matrix to rotate
-    //     cubeRotation * .7,// amount to rotate in radians
-    //     [0, 1, 0]);       // axis to rotate around (X)
+    
+    // Create the normal matrix that represents the normals of the 
+    // modelViewMatrix. 
+    const normalMatrix = mat4.create();
+    mat4.invert(normalMatrix, modelViewMatrix);
+    mat4.transpose(normalMatrix, normalMatrix);
        
     // Tell WebGL how to pull out the positions from the position
     // buffer into the vertexPosition attribute.
@@ -88,6 +90,29 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         gl.enableVertexAttribArray(
             programInfo.attribLocations.vertexNormal);
     }
+    
+    
+    var faceColors = [  // BLUE 
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Front face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Back face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Top face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Bottom face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Right face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Left face
+    ];
+
+    // Convert the array of colors into a table for all the vertices.
+
+    var colors = [];
+
+    
+    for (var j = 0; j < faceColors.length; ++j) {
+        const c = faceColors[j];
+    
+        // Repeat each color four times for the four vertices of the face
+        colors = colors.concat(c, c, c, c);
+    }
+
     // Tell WebGL how to pull out the colors from the color buffer
     // into the vertexColor attribute.
     {
@@ -97,6 +122,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         const stride = 0;
         const offset = 0;
         gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+        gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(colors));
         gl.vertexAttribPointer(
             programInfo.attribLocations.vertexColor,
             numComponents,
@@ -107,6 +133,31 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         gl.enableVertexAttribArray(
             programInfo.attribLocations.vertexColor);
     }
+
+    // Change the shading style
+    var shading =   [shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+        shadingStyle, shadingStyle, shadingStyle, shadingStyle];{
+        const numComponents = 1;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.shadingStyle);
+        gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(shading));            
+        gl.vertexAttribPointer(
+            programInfo.attribLocations.vertexShadingStyle,
+            numComponents,
+            type,
+            normalize,
+            stride,
+            offset);
+        gl.enableVertexAttribArray(
+            programInfo.attribLocations.vertexShadingStyle);
+    } 
 
     // Tell WebGL which indices to use to index the vertices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);

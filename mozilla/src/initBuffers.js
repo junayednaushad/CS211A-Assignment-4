@@ -1,5 +1,32 @@
 function initBuffers(gl) {
 
+    // Create a buffer for the shading style. 
+    const shadingStyleBuffer = gl.createBuffer();
+
+    // Select the shadingBuffer as the one to apply buffer 
+    // operations to from here on out. 
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, shadingStyleBuffer);
+
+    // Now create an array containing the number for our 
+    // desired shading style. 
+    
+    var shading =   [shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle];
+
+    // Now pass the shading style into WebGL. We do this by creating 
+    // an integer array from the JavaScript array, then use it to 
+    // fill the current buffer.
+  
+    gl.bufferData(gl.ARRAY_BUFFER,
+        new Float32Array(shading),
+        gl.DYNAMIC_DRAW);
+
+
     // Create a buffer for the square's positions.
   
     const positionBuffer = gl.createBuffer();
@@ -101,20 +128,22 @@ function initBuffers(gl) {
     
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexNormals),
                     gl.STATIC_DRAW);
-    
 
-    const faceColors = [
-        [0.0,  0.0,  1.0,  1.0],    // Front face
-        [0.0,  0.0,  1.0,  1.0],    // Back face
-        [0.0,  0.0,  1.0,  1.0],    // Top face
-        [0.0,  0.0,  1.0,  1.0],    // Bottom face
-        [0.0,  0.0,  1.0,  1.0],    // Right face
-        [0.0,  0.0,  1.0,  1.0],    // Left face
+
+
+    var faceColors = [  // BLUE 
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Front face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Back face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Top face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Bottom face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Right face
+        [cubeRGB[0],  cubeRGB[1],  cubeRGB[2],  cubeRGB[3]],    // Left face
     ];
 
     // Convert the array of colors into a table for all the vertices.
 
     var colors = [];
+
     
     for (var j = 0; j < faceColors.length; ++j) {
         const c = faceColors[j];
@@ -125,7 +154,7 @@ function initBuffers(gl) {
                   
     const colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.DYNAMIC_DRAW);
   
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -149,6 +178,7 @@ function initBuffers(gl) {
         new Uint16Array(indices), gl.STATIC_DRAW);
 
     return {
+        shadingStyle: shadingStyleBuffer,
         position: positionBuffer,
         normal: normalBuffer,
         color: colorBuffer,

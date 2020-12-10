@@ -1,0 +1,13 @@
+.wrapper {
+    position:relative;
+    }
+.wrapper > canvas,
+.wrapper > input {
+    position:absolute;
+    left:0;
+    top:0;
+    }
+.wrapper > input {
+    right:10px;    /* places the slider */
+    top:10px;
+    }

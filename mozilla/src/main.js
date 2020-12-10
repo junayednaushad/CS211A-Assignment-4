@@ -4,10 +4,6 @@ main();
 // Start here
 //
 function main() {
-  const canvas = document.querySelector('#glcanvas');
-  // Initialize the GL context
-  const gl = canvas.getContext('webgl');
-
   // If we don't have a GL context, give up now
   // Only continue if WebGL is available and working
 
@@ -24,6 +20,7 @@ function main() {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
       vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'), 
       vertexNormal: gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
+      vertexShadingStyle: gl.getAttribLocation(shaderProgram, 'aShaderType'),
     },
     uniformLocations: {
         projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
@@ -34,6 +31,12 @@ function main() {
   };
 
   const buffers = initBuffers(gl);
+
+  document.addEventListener('keyup', onKeyUp, false);
+
+  // Setup a ui.
+//   webglLessonsUI.setupSlider("#x", { max: gl.canvas.width });
+//   webglLessonsUI.setupSlider("#y", {slide: updatePosition(1), max: gl.canvas.height});
 
   var then = 0;
 
@@ -48,6 +51,7 @@ function main() {
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
+
 }
 
 

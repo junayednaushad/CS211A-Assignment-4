@@ -3,6 +3,7 @@ const vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec4 aVertexColor;
     attribute vec3 aVertexNormal;
+    attribute float aShaderType;  // 0 -> No shader; 1 -> Gouroud shader; 2 -> Phong shader; 
 
     uniform mat4 uNormalMatrix; 
     uniform mat4 uModelViewMatrix;
@@ -16,15 +17,22 @@ const vsSource = `
         gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
         vColor = aVertexColor;
 
-        // Apply lighting effect
+        if (aShaderType < 0.5) {  // No shading
+            vLighting = vec3(1.0, 1.0, 1.0);
+        } else if (aShaderType == 1.0) { // Gouroud shading
 
-        highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
-        highp vec3 directionalLightColor = vec3(1, 1, 1);
-        highp vec3 directionalVector = normalize(vec3(0.85, 0.8, 0.75));
 
-        highp vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
+            // Apply lighting effect
 
-        highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0); 
-        vLighting = ambientLight + (directionalLightColor * directional);
+            highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
+            highp vec3 directionalLightColor = vec3(1, 1, 1);
+            highp vec3 directionalVector = normalize(vec3(0.85, 0.8, 0.75));
+
+            highp vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
+
+            highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0); 
+            vLighting = ambientLight + (directionalLightColor * directional);
+        }
+
     }
 `;
