@@ -40,6 +40,8 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     mat4.translate(modelViewMatrix,     // destination matrix
                     modelViewMatrix,     // matrix to translate
                     [translation, 0.0, -20.0]);  // amount to translate
+    mat4.rotate(modelViewMatrix, modelViewMatrix, 
+                Math.PI/8, [1, 0, 0]);
     mat4.rotate(modelViewMatrix,  // destination matrix
                 modelViewMatrix,  // matrix to rotate
                 cubeRotation,     // amount to rotate in radians
@@ -136,11 +138,11 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
 
     // Change the shading style
     var shading =   [shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
-        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
-        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
-        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
-        shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
-        shadingStyle, shadingStyle, shadingStyle, shadingStyle];{
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle, 
+                     shadingStyle, shadingStyle, shadingStyle, shadingStyle];{
         const numComponents = 1;
         const type = gl.FLOAT;
         const normalize = false;
