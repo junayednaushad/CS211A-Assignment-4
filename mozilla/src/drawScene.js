@@ -1,5 +1,5 @@
 function drawScene(gl, programInfo, buffers, deltaTime) {
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
     gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -39,9 +39,9 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
 
     mat4.translate(modelViewMatrix,     // destination matrix
                     modelViewMatrix,     // matrix to translate
-                    [translation, 0.0, -20.0]);  // amount to translate
-    mat4.rotate(modelViewMatrix, modelViewMatrix, 
-                Math.PI/8, [1, 0, 0]);
+                    [0.0, 0.0, -20.0]);  // amount to translate
+    // mat4.rotate(modelViewMatrix, modelViewMatrix, 
+    //             Math.PI/8, [1, 0, 0]);
     mat4.rotate(modelViewMatrix,  // destination matrix
                 modelViewMatrix,  // matrix to rotate
                 cubeRotation,     // amount to rotate in radians
@@ -192,12 +192,9 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     
 
     // Second cube
-
-    const modelViewMatrix2 = mat4.create();
-
     mat4.translate(modelViewMatrix,     // destination matrix
                     modelViewMatrix,     // matrix to translate
-                    [4, 0.0, 0.0]);  // amount to translate
+                    [translation, 0.0, 0.0]);  // amount to translate
     mat4.scale(modelViewMatrix, modelViewMatrix, [0.5,0.5,0.5])
     
     gl.uniformMatrix4fv(
@@ -216,7 +213,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
 
-    cubeRotation += 1.5*deltaTime;
+    cubeRotation += 0.75*deltaTime;
 }
   
   
