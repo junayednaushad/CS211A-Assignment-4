@@ -40,8 +40,10 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     mat4.translate(modelViewMatrix,     // destination matrix
                     modelViewMatrix,     // matrix to translate
                     [0.0, 0.0, -20.0]);  // amount to translate
-    // mat4.rotate(modelViewMatrix, modelViewMatrix, 
-    //             Math.PI/8, [1, 0, 0]);
+    if (viewingAngle == 0) {
+        mat4.rotate(modelViewMatrix, modelViewMatrix, 
+                Math.PI/8, [1, 0, 0]);
+    }
     mat4.rotate(modelViewMatrix,  // destination matrix
                 modelViewMatrix,  // matrix to rotate
                 cubeRotation,     // amount to rotate in radians
